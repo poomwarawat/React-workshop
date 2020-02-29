@@ -1,38 +1,42 @@
 import React, {Component} from 'react';
-import LikeBtn  from './LikeBtn'
+import LikeButton from './LikeButton'
+import Profile from './Profile'
 
 class App extends Component {
-    
-    state = {
-        likeme : 0,
-        disLike :0
+    constructor(){
+        super()
+        this.state = {
+            Like : 0,
+            showButton : true
+        }
+        console.log("App : constructor")
+    }
+    componentDidMount(){
+        console.log("App : componentDidMount")
     }
     render(){
+        console.log("App : Render")
         return ( 
             <div className="App">
-                <h1>Like : {this.state.likeme}</h1>
-                <h1>Dislike : {this.state.disLike}</h1>
-                <LikeBtn onclickLike={this.handleClick} like={true}></LikeBtn>
-                <LikeBtn onclickLike={this.handleClick}></LikeBtn>
+                <h1>React L ifecycle</h1>
+                <Profile like={this.state.Like} hideBtn={this.setHidden}></Profile>
+                {this.state.showButton && <LikeButton onClickLike={this.handleClick}></LikeButton>}
             </div>
         );
     }
-
-    handleClick = (like) =>{
-        if(like){
-            this.setState((prevState, props) => {
-                return{
-                    likeme : prevState.likeme + 1
-                }
-            })
-        }else{
-            this.setState((prevState, props) => {
-                return{
-                    disLike : prevState.disLike + 1
-                }
-            })
-        }
-        
+    handleClick = () =>{
+        this.setState((ps) =>{
+            return{
+                Like : ps.Like + 1
+            }
+        })
+    }
+    setHidden = () =>{
+        this.setState((ps) =>{
+            return{
+                showButton : false
+            }
+        })
     }
 }
 
