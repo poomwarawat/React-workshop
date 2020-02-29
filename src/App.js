@@ -1,50 +1,63 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
-
-class App extends Component {
+export default class App extends Component {
     constructor(props){
         super(props)
         this.state = {
-            data : null,
-            err : null 
+            name : "",
+            lastname : "",
+            catagory : "",
+            status : true
         }
     }
-    componentDidMount(){
-        fetch("https://jsonplaceholder.typicode.com/posts?userId/1")
-        .then(result =>{
-            if(result.ok){
-                return result
-            }else throw Error(result.status)
+    handleChange = (e) =>{
+        const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
+        const name = e.target.name
+        this.setState({
+            [name] : value
         })
-        .then(result => result.json())
-        .then(result => this.setState((ps) => {return { data: result }}))
-        .catch(e => this.setState({ err : e.message }))
     }
-    render(){
-        const {data , err } = this.state
-        let list = <h1>Loading...</h1>
-        if (data) {
-            list = data.map((datas) =>{
-                return(
-                    <div key={datas.id}>
-                        <h3>{datas.title}</h3>
-                        <h2>{datas.body}</h2>
-                    </div>
-                )
-            })
-        }else{
-            list = <h1>No Data</h1>
-        }
-        if(err){
-            list = <h1>{err}</h1>
-        }
-        return ( 
-            <div className="App">
-                <h1>Load Data</h1>
-                {list}
+    handleSubmit = (e) =>{
+        e.preventDefault()
+        console.log(this.state)
+    }
+    render() {
+        return (
+            <div>
+                <h1>Sample Form</h1>
+                <form onSubmit={this.handleSubmit}>
+                    <p>name</p>
+                    <input 
+                        type="text" 
+                        name="name"
+                        placeholder="Please enter your name" 
+                        value={this.state.name}
+                        onChange={this.handleChange}>
+                    </input><br></br>
+                    <p>lastname</p>
+                    <input
+                        type="text"
+                        name="lastname"
+                        placeholder="Please enter lastname"
+                        onChange={this.handleChange}>
+                    </input><br></br>
+                    <p>Product</p>
+                    <select name="catagory" onChange={this.handleChange} value={this.state.catagory}>
+                        <option value="0">...</option>
+                        <option value="1">iphone</option>
+                        <option value="2">macbook</option>
+                        <option value="3">camera</option>
+                    </select>
+                    <p>Status</p>
+                    <input 
+                        type="checkbox"
+                        checked={this.state.status}
+                        onChange={this.handleChange}
+                        name="status"
+                    ></input>
+                    <button type="submit">Click me</button>
+                </form>  
             </div>
-        );
+        )
     }
 }
-
-export default App;
